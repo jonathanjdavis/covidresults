@@ -1,0 +1,12 @@
+{
+  "name": "covid-results-checker",
+  "version": "1.0.0",
+  "main": "run.js",
+  "author": "Jonathan J Davis",
+  "license": "MIT",
+  "dependencies": {
+    "luxon": "^1.25.0",
+    "nodemailer": "^6.4.11",
+    "puppeteer": "^5.3.0"
+  }
+}

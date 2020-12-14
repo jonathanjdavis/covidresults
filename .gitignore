@@ -1,0 +1,9 @@
+.DS_Store
+config.js
+logs/
+node_modules/
+patients/
+results/
+!logs/.gitkeep
+!patients/.gitkeep
+!results/.gitkeep
