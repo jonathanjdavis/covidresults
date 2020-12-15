@@ -6,5 +6,4 @@ patients/
 results/
 !logs/.gitkeep
 !patients/.gitkeep
-!patients/patient.example.json
 !results/.gitkeep
