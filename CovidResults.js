@@ -13,7 +13,7 @@ class CovidResults {
 
     async checkResults(patients) {
         this.browser = await puppeteer.launch({
-            headless: false
+            // headless: false
         });
         this.page = await this.browser.newPage();
         const page = this.page;
