@@ -5,6 +5,10 @@ const { DateTime } = require("luxon");
 
 const covidResultEvent = new EventEmitter();
 
+function theHumanDelay(t1 = 50, t2 = 25) {
+    return Math.round(Math.random()*t1) + t2;
+}
+
 class CovidResults {
     constructor(args = null) {
         this.browser = {};
@@ -18,7 +22,7 @@ class CovidResults {
         this.page = await this.browser.newPage();
         const page = this.page;
         for(const patient of patients) {
-            await page.waitForTimeout(Math.round(Math.random()*1750) + 250);
+            await page.waitForTimeout(theHumanDelay());
             let results = { result: false };
             try {
                 switch(patient.facility) {
@@ -53,7 +57,7 @@ class CovidResults {
         await page.waitForSelector('#fname', {
             visible: true,
         });
-        await page.waitForTimeout(Math.round(Math.random()*550) + 250);
+        await page.waitForTimeout(theHumanDelay());
         await page.type('input#fname', patient.fname);
         await page.type('input#lname', patient.lname);
         await page.type('input#pcode', patient.pcode.substring(0,3));
@@ -94,44 +98,71 @@ class CovidResults {
         await page.waitForSelector('label[for="id-type-ohc"]');
         await page.click('label[for="id-type-ohc"]');
 
+        await page.waitForTimeout(theHumanDelay());
         await page.waitForSelector('#btn_step2_ohc_known');
         await page.click('#btn_step2_ohc_known');
 
         await page.waitForSelector('label[for="acceptedTerm1"]')
         await page.click('label[for="acceptedTerm1"]');
-        await page.waitForTimeout(Math.round(Math.random()*250) + 50);
+        
+        
         await page.waitForSelector('button#button_submit:not([disabled])');
+        await page.waitForTimeout(theHumanDelay());
         await page.click('button#button_submit');
     
         await page.waitForSelector('input#hcn');
-        await page.waitForTimeout(Math.round(Math.random()*250) + 50);
-        await page.type('input#hcn', patient.hcn);
-        await page.type('input#vCode', patient.vc);
-        await page.type('input#scn', patient.scn);
+        await page.waitForTimeout(theHumanDelay());
+        await page.focus('input#hcn');
+        await page.type('input#hcn', patient.hcn,  {delay: theHumanDelay()});
+        await page.waitForTimeout(theHumanDelay());
+        await page.type('input#vCode', patient.vc,  {delay: theHumanDelay()});
+        
+        await page.waitForTimeout(theHumanDelay());
+        await page.focus('input#scn');
+        await page.type('input#scn', patient.scn,  {delay: theHumanDelay()});
+
+
+        await page.waitForTimeout(theHumanDelay());
+        await page.focus('input#fname');
+        await page.type('input#fname', patient.fname,  {delay: theHumanDelay()});
+        await page.keyboard.press("Tab");
+        await page.waitForTimeout(theHumanDelay());
+        await page.type('input#lname', patient.lname,  {delay: theHumanDelay()});
     
-        await page.type('input#fname', patient.fname);
-        await page.type('input#lname', patient.lname);
-    
-        let dt = DateTime.fromISO(patient.dob)
-        await page.waitForTimeout(Math.round(Math.random()*250) + 50);
-        await page.type('input#dob-igc-yyyy', dt.toFormat('y'));
-        await page.type('input#dob-igc-mm', dt.toFormat('LL'));
-        await page.type('input#dob-igc-dd', dt.toFormat('dd'));
-    
+
+
+        let dt = DateTime.fromISO(patient.dob);
+        await page.waitForTimeout(theHumanDelay());
+        await page.focus('input#dob-igc-yyyy');
+        await page.type('input#dob-igc-yyyy', dt.toFormat('y'), {delay: theHumanDelay()});
+        await page.keyboard.press("Tab");
+        await page.waitForTimeout(theHumanDelay());
+        await page.type('input#dob-igc-mm', dt.toFormat('LL'),  {delay: theHumanDelay()});
+        await page.keyboard.press("Tab");
+        await page.waitForTimeout(theHumanDelay());
+        await page.type('input#dob-igc-dd', dt.toFormat('dd'),  {delay: theHumanDelay()});
+
+ 
+        await page.waitForTimeout(theHumanDelay());
         switch(patient.sex) {
             case "M":
+                await page.hover('label[for="gender-male"]');
                 await page.click('label[for="gender-male"]');
                 break;
             case "F":
+                await page.hover('label[for="gender-female"]');
                 await page.click('label[for="gender-female"]');
                 break;
             case "O":
+                await page.hover('label[for="gender-other"]');
                 await page.click('label[for="gender-other"]');
                 break;
         }
     
-        await page.type('input#pCode', `${patient.pcode.substring(0,3)} ${patient.pcode.substring(3,6)}`);
-        await page.waitForTimeout(Math.round(Math.random()*250) + 50);
+        await page.waitForTimeout(theHumanDelay());
+        await page.type('input#pCode', `${patient.pcode.substring(0,3)} ${patient.pcode.substring(3,6)}`,  {delay: theHumanDelay()});
+
+        await page.waitForTimeout(theHumanDelay(750,250));
         await page.waitForSelector('button#button_verify:not([disabled])');
         await page.click('button#button_verify');
     
