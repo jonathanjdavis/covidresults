@@ -5,7 +5,7 @@ const { DateTime } = require("luxon");
 
 const covidResultEvent = new EventEmitter();
 
-function theHumanDelay(t1 = 50, t2 = 25) {
+function theHumanDelay(t1 = 77, t2 = 47) {
     return Math.round(Math.random()*t1) + t2;
 }
 
@@ -182,7 +182,8 @@ class CovidResults {
                         await page.$('#result_negative_title_card') || 
                         await page.$('#result_positive_detected_title_card') || 
                         await page.$('#result_withdrawn_title_card') || 
-                        await page.$('#result_unavailable_title_card')
+                        await page.$('#result_unavailable_title_card') ||
+                        await page.$('#result_result_unavailable_title_invalid')
                     ) {
                         await page.waitForSelector('section.result-section ~ div:nth-of-type(2)');
                         let resultsHTML = await page.$eval('section.result-section ~ div:nth-of-type(2)', (element) => {
